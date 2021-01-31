@@ -18,12 +18,21 @@ class AuthController extends Controller
                 'message' => 'unauthorized'
             ], 401);
         }
-        $token = $user->createToken('token-name');
+        $token = $user->createToken('token');
 
         return response()->json([
             'message' => 'success',
             'user' => $user,
             'token' => $token->plainTextToken,
+        ], 200);
+    }
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'Berhasil Logout',
+
         ], 200);
     }
 }
